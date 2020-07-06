@@ -13,6 +13,8 @@ export const request = (config) => {
     })
     // 请求拦截
     example.interceptors.request.use( config => {
+        // 给所有的请求头加token
+        config.headers.Authorization = sessionStorage.getItem("token")
         return config
     })
 

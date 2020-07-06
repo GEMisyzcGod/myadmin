@@ -1,13 +1,14 @@
 <template>
     <div>
-        <h1>首页</h1>
+        <h1>权限列表</h1>
     </div>
 </template>
 <script>
 export default {
-    name:'Login'
+    name:'Right'
 }
 </script>
-<style scoped>
+
+<style lang="stylus" scoped>
 
 </style>
