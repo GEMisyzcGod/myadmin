@@ -81,7 +81,7 @@
         </el-pagination>
         </el-card>
         
-        <TanChuang ref="userAddExit" :userInfo="userInfo"></TanChuang>
+        <TanChuang ref="userAddExit" :userInfo="userInfo" @userRuleForm="userRuleForm"></TanChuang>
     </div>
 
 </template>
@@ -167,6 +167,10 @@ export default {
             this.userInfo = userInfo
             // console.log(userInfo)
             this.$refs.userAddExit.dialogVisible = true
+        },
+        //更新用户列表
+        userRuleForm(){
+            this.getuserList()
         }
         
     }

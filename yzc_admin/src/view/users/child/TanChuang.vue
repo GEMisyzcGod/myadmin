@@ -2,15 +2,14 @@
     <div>
         
         <el-dialog
-            :title="isAddUser ? '添加用户' : '修改用户'"
+            :title=" isAddUser ? '添加用户' : '修改用户'"
             :visible="dialogVisible"
             width="60%"
             :before-close="handleClose">
-            {{userInfo}}
             <el-form :model="userRuleForm" :rules="rules" ref="ruleForm" label-width="80px">
                 <!-- 表单 -->
                 <el-form-item label="用户名" prop="username">
-                    <el-input v-model="userRuleForm.username"></el-input>
+                    <el-input v-model="userRuleForm.username" :disabled="!isAddUser"></el-input>
                 </el-form-item>
                 <el-form-item label="密码" prop="password" v-if="isAddUser">
                     <el-input v-model="userRuleForm.password"></el-input>
@@ -24,12 +23,15 @@
             </el-form>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="dialogVisible = false">取 消</el-button>
-                <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+                <el-button type="primary" @click="submitClick">确 定</el-button>
             </span>
         </el-dialog>
     </div>
 </template>
 <script>
+import {addUserRequest} from '@network/api'
+import {exitUserRequest} from '@network/api'
+// import {exitUserRequest} from '@network/api'
 import {regsMobile} from '@tools/regx'
 export default {
     name:'TanChuang',
@@ -68,21 +70,58 @@ export default {
             { validator:regsMobile, trigger: 'blur'}
           ],
         },
+        userId:'',
         dialogVisible:false,//控制显示隐藏
         }
     },
     methods:{
+        //添加用户
+        submitClick(){
+            // 验证表单
+            this.$refs.ruleForm.validate( async boo => {
+                if(!boo)return
+                 if(this.isAddUser){
+                    //添加用户
+                    // alert("添加用户")
+                    const result = await addUserRequest(this.userRuleForm)
+                    console.log(result)
+                    if(result.meta.status !== 201) return this.$message.error(result.meta.msg)
+                    this.dialogVisible = false
+                    this.$emit('updateUserList')
+                    return this.$message.success("添加用户成功")
+                }else{
+                    //编辑用户
+                    // alert("编辑用户")
+                    const {email,mobile} = this.userRuleForm
+                    const result = await exitUserRequest(this.userId,email,mobile)
+                    if(result.meta.status !== 200) return this.$message.error("修改失败");
+                    this.$emit('updateUserList')
+                    this.$message.success("修改成功");
+                }
+            })
+           
+        },
         // 点击遮罩层关闭对话框
         handleClose() {
             // this.$refs.userRuleForm.restFields()
         this.dialogVisible = false
     },
+    },
     computed:{
         isAddUser(){
-            // 如果是添加 返回true，否则返回false
+            // 如果是添加，返回true，否则返回false
             return !this.userInfo.id || !this.userInfo.username
         }
-    }
+    },
+    watch:{
+        userInfo(newValue){
+            const {id,username,email,mobile} = newValue
+            // this.userRuleForm.username = username
+            // this.userRuleForm.email = email
+            // this.userRuleForm.mobile = mobile
+            this.userId = id
+            this.userRuleForm = {username,email,mobile,password:''}
+        }
     }
 }
 </script>

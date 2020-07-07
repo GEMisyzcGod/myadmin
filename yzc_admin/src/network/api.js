@@ -27,3 +27,15 @@ export const updataStateRequest = (uId,type) => request({
     url:`users/${uId}/state/${type}`,
     method:'put'
 })
+// 添加用户
+export const addUserRequest = (userInfo) => request({
+    url:'users',
+    method:'post',
+    data:userInfo
+})
+// 编辑用户
+export const exitUserRequest = (id,email,mobile) => request({
+    url:`user/${id}`, 
+    method:'put',
+    data:{email,mobile}
+})
