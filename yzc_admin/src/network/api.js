@@ -15,3 +15,15 @@ export const userRequest = () => request({
     url:'menus',
     method:'get'
 })
+
+// 获取用户列表
+export const userListRequest = (params) => request({
+    url:'users',
+    mothod:'get',
+    params
+})
+// 状态请求
+export const updataStateRequest = (uId,type) => request({
+    url:`users/${uId}/state/${type}`,
+    method:'put'
+})
