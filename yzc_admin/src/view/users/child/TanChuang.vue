@@ -79,7 +79,7 @@ export default {
         submitClick(){
             // 验证表单
             this.$refs.ruleForm.validate( async boo => {
-                if(!boo)return
+                if(!boo) return
                  if(this.isAddUser){
                     //添加用户
                     // alert("添加用户")
@@ -87,14 +87,15 @@ export default {
                     console.log(result)
                     if(result.meta.status !== 201) return this.$message.error(result.meta.msg)
                     this.dialogVisible = false
-                    this.$emit('updateUserList')
+                    this.$emit('userRuleForm')
                     return this.$message.success("添加用户成功")
                 }else{
                     //编辑用户
                     // alert("编辑用户")
                     const {email,mobile} = this.userRuleForm
                     const result = await exitUserRequest(this.userId,email,mobile)
-                    if(result.meta.status !== 200) return this.$message.error("修改失败");
+                    console.log(result)
+                    if(result.meta.status !== 200) return this.$message.error(result.meta.msg);
                     this.$emit('updateUserList')
                     this.$message.success("修改成功");
                 }

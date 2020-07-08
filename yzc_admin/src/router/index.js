@@ -9,6 +9,12 @@ const Rights = () => import('@view/users/Rights')
 const Roles = () => import('@view/users/Roles')
 const Users = () => import('@view/users/Users')
 
+
+const originalPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch(err => err)
+}
+
   const routes = [
   {
     path:'/',

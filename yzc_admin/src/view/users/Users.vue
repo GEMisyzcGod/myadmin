@@ -55,17 +55,15 @@
             <el-table-column
                 label="操作" width="200px">
                 <template slot-scope="scope">
-                    <el-tooltip class="item" effect="dark" content="编辑" placement="top" >
+                    <el-tooltip class="item" effect="dark" content="编辑" placement="top">
                         <el-button type="primary" size="mini" icon="el-icon-edit" @click="exitClick(scope.row)"></el-button>  
                     </el-tooltip>
-                    <el-tooltip class="item" effect="dark" content="删除" placement="top">
-                        <el-button type="danger" size="mini" icon="el-icon-delete"></el-button>  
+                    <el-tooltip class="item" effect="dark" content="删除" placement="top" >
+                        <el-button type="danger" size="mini" icon="el-icon-delete" @click="delClick(scope.row.id)"></el-button>  
                     </el-tooltip>
                     <el-tooltip class="item" effect="dark" content="分配" placement="top">
-                        <el-button type="warning" size="mini" icon="el-icon-setting"></el-button>  
-                    </el-tooltip>
-                    
-                    
+                        <el-button type="warning" size="mini" icon="el-icon-setting" @click="distributionClick(scope.row)"></el-button>  
+                    </el-tooltip>   
                 </template>
             </el-table-column>
         </el-table>
@@ -81,11 +79,22 @@
         </el-pagination>
         </el-card>
         
-        <TanChuang ref="userAddExit" :userInfo="userInfo" @userRuleForm="userRuleForm"></TanChuang>
+        <TanChuang ref="userAddExit" :userInfo="userInfo" @userRuleForm="userRuleForm"
+        @updateUserList="updateUserList"></TanChuang>
+
+        <DistributionRoles ref="userDistributionRoles" :fenpeiRoles="fenpeiRoles" :roleList="roleList" 
+        @updateUserList="updateUserList">
+
+        </DistributionRoles>
+
     </div>
 
 </template>
 <script>
+
+import {reqRoleUser,reqRoleList} from "@network/api"
+import DistributionRoles from '@view/users/child/DistributionRoles'
+import {deleteUserRequest} from '@network/api'
 import TanChuang from '@view/users/child/TanChuang'
 import {updataStateRequest} from '@network/api'
 import {userListRequest} from '@network/api'
@@ -94,7 +103,8 @@ export default {
     name:'Users',
     components:{
         MianbaoNav,
-        TanChuang
+        TanChuang,
+        DistributionRoles
     },
     data(){
         return{
@@ -107,6 +117,8 @@ export default {
         total:0,//总条数
         dialogVisible: false,//添加用户对话框
         userInfo:{},
+        fenpeiRoles:{},//分配角色信息
+        roleList:[],//角色列表
         }
     },
     created(){
@@ -171,10 +183,46 @@ export default {
         //更新用户列表
         userRuleForm(){
             this.getuserList()
+        },
+        // 编辑更新
+        updateUserList(){
+            this.getuserList()
+        },
+        // 删除用户
+        delClick(id){
+            // console.log(id)
+            this.$confirm('确定删除吗?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+            }).then( async () => {
+                // this.$message({
+                //     type: 'success',
+                //     message: '删除成功!'
+                // });
+                const result = await deleteUserRequest(id)
+                console.log(result)
+                if(result.meta.status !== 200) return this.$message.error("删除失败")
+                this.$message.success("删除成功")
+                this.getuserList()
+            }).catch(() => {
+            this.$message({
+                type: 'info',
+                message: '已取消删除'
+            });          
+            });
+        },
+        // 分配角色
+        async distributionClick(userInfo){
+            this.$refs.userDistributionRoles.dialogVisible = true
+            this.fenpeiRoles = userInfo
+
+            const result = await reqRoleList()
+            if(result.meta.status !== 200) return this.$message.error("获取角色列表失败")
+            this.$message.success("获取角色列表成功")
+            this.roleList = result.data
         }
-        
-    }
-}
+}}
 </script>
 
 <style lang="less" scoped>

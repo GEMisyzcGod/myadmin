@@ -35,7 +35,31 @@ export const addUserRequest = (userInfo) => request({
 })
 // 编辑用户
 export const exitUserRequest = (id,email,mobile) => request({
-    url:`user/${id}`, 
+    url:`users/${id}`, 
     method:'put',
     data:{email,mobile}
 })
+
+// 删除用户
+export const deleteUserRequest = (id) => request({
+    url:`users/${id}`,
+    method:'delete'
+})
+
+// 分配角色
+export const reqRoleUser = (id,rid) => request({url:`users/${id}/role`,method:'put',data:{rid}})
+
+// 角色列表
+export const reqRoleList = () => request({url:'roles',method:'get'})
+
+//权限列表 
+export const powerListRequest = () => request({
+    url:'rights/list',
+    method:'get',
+})
+// 角色树
+export const treeListRequest = () => request({
+    url:'rights/tree',
+    method:'get',
+})
+
