@@ -63,3 +63,14 @@ export const treeListRequest = () => request({
     method:'get',
 })
 
+// 删除指定的权限
+export const deleteRoles = (roleId,rightId) => request({
+    url:`roles/${roleId}/rights/${rightId}`,
+    method:'delete',
+})
+
+// 删除角色
+export const deleteJuse = (id) => request({
+    url:`roles/${id}`,
+    method:'delete',
+})
