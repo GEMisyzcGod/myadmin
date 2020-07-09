@@ -74,3 +74,15 @@ export const deleteJuse = (id) => request({
     url:`roles/${id}`,
     method:'delete',
 })
+// 角色授权
+export const rolesRightsList = (roleId,rids) => request({
+    url:`roles/${roleId}/rights`,
+    method:'post',
+    data:{rids}
+})
+// 商品分类
+export const productFlList = ({type,pagenum,pagesize}) => request({
+    url:'categories',
+    method:'get',
+    params:{type,pagenum,pagesize}
+})

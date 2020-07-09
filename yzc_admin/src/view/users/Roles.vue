@@ -19,16 +19,18 @@
                     <template slot-scope="scope">
                         <el-button type="primary" size="mini" icon="el-icon-edit" @click="exitClick(scope.row)">编辑</el-button>
                         <el-button type="danger" size="mini" icon="el-icon-delete" @click="delClick(scope.row.id)">删除</el-button>
-                        <el-button type="warning" size="mini" icon="el-icon-s-tools">分配权限</el-button>
-                    </template>
-                    
+                        <el-button type="warning" size="mini" icon="el-icon-s-tools" @click="fenpeiClick(scope.row)">分配权限</el-button>
+                    </template> 
                 </el-table-column>
-               
             </el-table>
         </el-card>
+        <!-- 分配权限 -->
+        <Fenpei ref="fpRoles" :getRolesList="getRolesList" :rolesInfo="rolesInfo" @updataRolesInfo="updataRolesInfo"></Fenpei>
+
     </div>
 </template>
 <script>
+import Fenpei from '@view/users/rolesChild/Fenpei'
 import {deleteJuse} from '@network/api'
 import {reqRoleList} from "@network/api"
 import MianbaoNav from '@components/MianbaoNav'
@@ -37,17 +39,30 @@ export default {
     name:'Roles',
     components:{
         MianbaoNav,
-        RolesChild
+        RolesChild,
+        Fenpei
     },
     data(){
         return{
-            rolesList:[]
+            rolesList:[],//角色列表
+            rolesInfo:{},//当前点击的角色信息
         }
     },
     created(){
         this.getRolesList()
     },
     methods:{
+        // 更新
+        updataRolesInfo(){
+            this.rolesInfo = {}
+        },
+        //点击分配权限 
+        fenpeiClick(releInfo){
+            this.rolesInfo = releInfo
+            // 点击按钮显示弹窗
+            this.$refs.fpRoles.dialogVisible = true
+            
+        },
         // 获取用户列表
         async getRolesList(){
             const result = await reqRoleList()

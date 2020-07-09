@@ -8,7 +8,7 @@ const User = () => import('@view/user/User')
 const Rights = () => import('@view/users/Rights')
 const Roles = () => import('@view/users/Roles')
 const Users = () => import('@view/users/Users')
-
+const ProductFenlei = () => import('@view/product/ProductFenlei')
 
 const originalPush = VueRouter.prototype.push
 VueRouter.prototype.push = function push(location) {
@@ -45,7 +45,12 @@ VueRouter.prototype.push = function push(location) {
         path:'/users',
         component:Users,
         name:'Users'
-      }
+      },
+      {
+        path:'/categories',
+        component:ProductFenlei,
+        name:'ProductFenlei'
+      },
     ]
   }
 ]

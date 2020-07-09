@@ -14,6 +14,8 @@ import Store from "store/storages/sessionStorage"
 // session
 // Store.write("user","90809")
 // console.log(Store.read("user","90809"))
+import ZkTable from 'vue-table-with-tree-grid'
+Vue.component('ZkTable', ZkTable)
 
 Vue.config.productionTip = false
 import axios from 'axios'

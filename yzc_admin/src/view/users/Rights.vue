@@ -46,7 +46,7 @@ export default {
         // 获取权限列表
         async getPower(){
             const result = await powerListRequest()
-            console.log(result)
+            // console.log(result)
             if(result.meta.status !== 200) return this.$message.error("获取权限列表失败")
             this.powerList = result.data
         }
