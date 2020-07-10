@@ -9,6 +9,7 @@ const Rights = () => import('@view/users/Rights')
 const Roles = () => import('@view/users/Roles')
 const Users = () => import('@view/users/Users')
 const ProductFenlei = () => import('@view/product/ProductFenlei')
+const Params = () => import('@view/params/Params')
 
 const originalPush = VueRouter.prototype.push
 VueRouter.prototype.push = function push(location) {
@@ -31,6 +32,11 @@ VueRouter.prototype.push = function push(location) {
     name:'User',
     redirect:'/users',
     children:[
+      {
+        path:'/params',
+        component:Params,
+        name:'Params'
+      },
       {
         path:'/rights',
         component:Rights,

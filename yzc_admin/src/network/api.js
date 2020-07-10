@@ -86,3 +86,6 @@ export const productFlList = ({type,pagenum,pagesize}) => request({
     method:'get',
     params:{type,pagenum,pagesize}
 })
+
+// 商品分类列表
+

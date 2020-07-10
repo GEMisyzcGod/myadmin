@@ -2,7 +2,7 @@
     <div >
         <MianbaoNav :items="['首页','商品管理','商品分类']"></MianbaoNav>
         <!-- 卡片 -->
-        <el-card style="width: 100%">
+        <el-card>
             <el-button type="primary">添加分类</el-button>
             <!-- 表格 -->
             <ZkTable
@@ -13,7 +13,7 @@
                 :show-index="true"
                 :expand-type="false"
                 :columns="columns"
-                
+                style="width:100%"
                 >
                 <template slot="isOk" slot-scope="scope">
                     <i class="el-icon-success" v-if="!scope.row.cat_deleted" style="color:green"></i>
@@ -26,7 +26,7 @@
                     <el-tag type="warning" v-else size="mini">三级</el-tag>
                 </template>
 
-                 <template slot="operation" slot-scope="scope">
+                 <template slot="operation" slot-scope="scope" width="300px">
                     <el-button type="primary" size="mini" icon="el-icon-edit">编辑</el-button>
                     <el-button type="danger"  size="mini" icon="el-icon-delete">删除</el-button>
                 </template>
@@ -42,7 +42,6 @@
                 layout="total, sizes, prev, pager, next, jumper"
                 :total="total">
             </el-pagination>
-
         </el-card>
     </div>
 </template>
